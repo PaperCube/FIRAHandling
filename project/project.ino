@@ -24,7 +24,8 @@ void setup() {
     // robot->initialRobot();
     // robot->pair();
     robot->testSensors();
-    // robot->enterManualMode();
+    robot->huntLine(30, 50, 2);
+    robot->enterManualMode();
 }
 
 void loop() {}

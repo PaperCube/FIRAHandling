@@ -19,7 +19,7 @@ class Grobot {
     UTFT *  GLCD       = new UTFT(QD_TFT180A, 51, 52, 32, 34, 33);
     PS2X *  controller = new PS2X();
     int     threshold[6];
-    int     lineCrossTime = 50;
+    int     lineCrossTime = 70;
 
   public:
     Grobot();
