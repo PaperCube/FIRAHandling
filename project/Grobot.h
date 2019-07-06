@@ -19,6 +19,8 @@ private:
     uc s1, s2, s3, s4, s5;
     UTFT *GLCD = new UTFT(QD_TFT180A, 51, 52, 32, 34, 33);
     PS2X *controller = new PS2X();
+    int threshold[6];
+    int lineCrossTime = 50;
 
 public:
     Grobot();
@@ -29,9 +31,20 @@ public:
     byte configController(uc, uc, uc, uc);
     void configController(uc, uc, uc, uc, bool, bool);
 
-    void walk(int, int);
-    void turnLeft();
-    void turnRight();
+    void testSensors(); //
+    void setThreshold(int, int, int, int, int);
+    void setThreshold(int, int);
+    int getThreshold(int);
+    void setLineCrossTime(int);
+
+    int getSensorVal(uc);
+    Gmotor *getMotor(uc);
+
+    void walkTime(int, int);
+    void walkBlock(int, int);
+    void turnLeft();  //
+    void turnRight(); //
+    void huntLine(int, int, int);
     void stop(int);
 
     void initialRobot();
@@ -71,6 +84,63 @@ byte Grobot::configController(uc clk, uc cmd, uc att, uc dat)
 void Grobot::configController(uc clk, uc cmd, uc att, uc dat, bool pressures, bool rumble)
 {
     this->controller->config_gamepad(clk, cmd, att, dat, pressures, rumble);
+}
+
+void Grobot::setThreshold(int s1, int s2, int s3, int s4, int s5)
+{
+    this->threshold[1] = s1;
+    this->threshold[2] = s2, this->threshold[3] = s3, this->threshold[4] = s4;
+    this->threshold[5] = s5;
+}
+
+void Grobot::setThreshold(int sensorNum, int val) { this->threshold[sensorNum] = val; }
+
+int Grobot::getThreshold(int sensorNum) { return this->threshold[sensorNum]; }
+
+void Grobot::setLineCrossTime(int lineCrossTime) { this->lineCrossTime = lineCrossTime; }
+
+int Grobot::getSensorVal(uc pin) { return analogRead(pin); }
+
+Gmotor *Grobot::getMotor(uc motor) { return motor == 'l' ? this->mtl : this->mtr; }
+
+void Grobot::walkTime(int speed, int ms)
+{
+    this->mtl->setSpeed(speed);
+    this->mtr->setSpeed(speed);
+    delay(ms);
+    this->mtl->stop(0);
+    this->mtr->stop(0);
+}
+
+void Grobot::walkBlock(int speed, int lineCnt)
+{
+    while (analogRead(s3) > this->threshold[3])
+    {
+        this->mtl->setSpeed(speed);
+        this->mtr->setSpeed(speed);
+    }
+    this->walkTime(speed, this->lineCrossTime);
+}
+
+void Grobot::huntLine(int baseSpeed, int subSpeed, int lineCnt)
+{
+    for (int i = 1; i <= lineCnt; i++)
+    {
+        while (analogRead(s1) > this->threshold[1] && analogRead(s5) > this->threshold[5])
+        {
+            if (analogRead(s3) > this->threshold[3])
+                mtl->setSpeed(baseSpeed), mtr->setSpeed(baseSpeed + subSpeed);
+            else
+                mtl->setSpeed(baseSpeed + subSpeed), mtr->setSpeed(baseSpeed);
+        }
+        this->walkTime(baseSpeed + subSpeed, this->lineCrossTime);
+    }
+}
+
+void Grobot::stop(int mode)
+{
+    this->mtl->stop(mode);
+    this->mtr->stop(mode);
 }
 
 void Grobot::initialRobot()
