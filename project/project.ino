@@ -23,8 +23,24 @@ void setup() {
 
     // robot->initialRobot();
     // robot->pair();
-    robot->testSensors();
-    robot->huntLine(30, 50, 2);
+    robot->setLineCrossTime(100);
+    robot->setThreshold(1, 888);
+    robot->setThreshold(2, 888);
+    robot->setThreshold(3, 888);
+    robot->setThreshold(4, 888);
+    robot->setThreshold(5, 888);
+    // robot->testSensors();
+    // robot->setHunterSensor(1, 3, 5);
+    robot->waitForButtonPress(PSB_START);
+    robot->huntLine(50, 50, 1);
+    robot->turnLeft(60, 0);
+    robot->huntLine(50, 50, 1);
+    robot->turnLeft(60, 0);
+    robot->huntLine(50, 50, 1);
+    robot->turnLeft(60, 0);
+    robot->huntLine(50, 50, 1);
+    robot->stop(0);
+    robot->waitForButtonPress(PSB_START);
     robot->enterManualMode();
 }
 

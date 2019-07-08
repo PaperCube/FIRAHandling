@@ -6,6 +6,7 @@
 #include <Servo.h>
 #include <UTFT.h>
 typedef unsigned char uc;
+typedef unsigned int  ui;
 
 extern uint8_t SmallFont[];
 extern uint8_t BigFont[];
@@ -16,6 +17,7 @@ class Grobot {
   private:
     Gmotor *mtl, *mtr;
     uc      s1, s2, s3, s4, s5;
+    uc      hunterL = s2, hunterM = s3, hunterR = 4;
     UTFT *  GLCD       = new UTFT(QD_TFT180A, 51, 52, 32, 34, 33);
     PS2X *  controller = new PS2X();
     int     threshold[6];
@@ -35,6 +37,7 @@ class Grobot {
     void setThreshold(int, int);
     int  getThreshold(int);
     void setLineCrossTime(int);
+    void setHunterSensor(int, int, int);
 
     int     getSensorVal(uc);
     Gmotor *getMotor(uc);
@@ -45,6 +48,9 @@ class Grobot {
     void turnRight(int, int);
     void huntLine(int, int, int);
     void stop(int);
+
+    void waitForButtonPress(ui);
+    void waitForButtonRelease(ui);
 
     void initialRobot();
     void pair();
@@ -80,6 +86,45 @@ void Grobot::configController(
     uc clk, uc cmd, uc att, uc dat, bool pressures, bool rumble) {
     this->controller->config_gamepad(clk, cmd, att, dat, pressures, rumble);
 }
+
+void Grobot::waitForButtonPress(ui button) {
+    while (true) {
+        delay(50);
+        this->controller->read_gamepad();
+        if (this->controller->ButtonPressed(button))
+            break;
+    }
+}
+void Grobot::waitForButtonRelease(ui button) {
+    while (true) {
+        delay(50);
+        this->controller->read_gamepad();
+        if (this->controller->ButtonReleased(button))
+            break;
+    }
+}
+/*Here are all buttons
+  PSB_SELECT      0x0001
+PSB_L3          0x0002
+PSB_R3          0x0004
+PSB_START       0x0008
+PSB_PAD_UP      0x0010
+PSB_PAD_RIGHT   0x0020
+PSB_PAD_DOWN    0x0040
+PSB_PAD_LEFT    0x0080
+PSB_L2          0x0100
+PSB_R2          0x0200
+PSB_L1          0x0400
+PSB_R1          0x0800
+PSB_GREEN       0x1000
+PSB_RED         0x2000
+PSB_BLUE        0x4000
+PSB_PINK        0x8000
+PSB_TRIANGLE    0x1000
+PSB_CIRCLE      0x2000
+PSB_CROSS       0x4000
+PSB_SQUARE      0x8000
+  */
 
 void Grobot::setThreshold(int s1, int s2, int s3, int s4, int s5) {
     this->threshold[1] = s1;
@@ -138,6 +183,7 @@ void Grobot::turnLeft(int speed, int mode) {
     }
     while (analogRead(this->s3) < this->threshold[3])
         ;
+    delay(50);
     while (analogRead(this->s3) > this->threshold[3])
         ;
     this->stop(0);
@@ -162,23 +208,32 @@ void Grobot::turnRight(int speed, int mode) {
     }
     while (analogRead(this->s3) > this->threshold[3])
         ;
+    delay(50);
     while (analogRead(this->s3) < this->threshold[3])
         ;
+    delay(50);
     while (analogRead(this->s3) > this->threshold[3])
         ;
     this->stop(0);
 }
 
+void Grobot::setHunterSensor(int hunterNumL, int hunterNumM, int hunterNumR) {
+    // this->hunterNumL = hunterNumL;
+    // this->hunterNumM = hunterNumM;
+    // this->hunterNumR = hunterNumR;
+}
+
 void Grobot::huntLine(int baseSpeed, int subSpeed, int lineCnt) {
     for (int i = 1; i <= lineCnt; i++) {
-        while (analogRead(s1) > this->threshold[1] &&
-               analogRead(s5) > this->threshold[5]) {
-            if (analogRead(s3) > this->threshold[3])
-                mtl->setSpeed(baseSpeed), mtr->setSpeed(baseSpeed + subSpeed);
-            else
+        while (analogRead(A2) > this->threshold[2] &&
+               analogRead(A4) > this->threshold[4]) {
+            if (analogRead(A3) > this->threshold[3])
                 mtl->setSpeed(baseSpeed + subSpeed), mtr->setSpeed(baseSpeed);
+            else
+                mtl->setSpeed(baseSpeed), mtr->setSpeed(baseSpeed + subSpeed);
         }
         this->walkTime(baseSpeed + subSpeed, this->lineCrossTime);
+        this->stop(0);
     }
 }
 
@@ -269,6 +324,8 @@ void Grobot::testSensors() {
     this->GLCD->setBackColor(0, 0, 0);
     this->GLCD->setColor(255, 255, 255);
     for (int i = 1; i <= 5; i++) {
+        if (i == 2 || i == 4)
+            continue;
         this->GLCD->setBackColor(0, 162, 232);
         this->GLCD->setColor(0, 0, 0);
         this->GLCD->print("                         ", 128, 0, 90);
