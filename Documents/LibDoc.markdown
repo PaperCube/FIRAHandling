@@ -112,6 +112,8 @@ emmmmm我想想好像有两个轮子来着，所以就有控制这两个轮子�
 Gmotor *lmt = new Gmotor(3, 2), *rmt = new Gmotor(5, 4);
 ```
 lmt啥玩意啊你逗我呢？！  
-别别别急啊Left(左)MoTor(电机)缩写不就变成lmt了吗，谁没有个手懒的时候用个缩写咋了你有意见啊？同理RightMotor(右电机)的缩写也就是rmt。由于左电机是由3，2号PWM口控制的，右电机是由5，4号PWM口控制的，你至少告诉它自己是那个口控制的吧？
+别别别急啊Left(左)MoTor(电机)缩写不就变成lmt了吗，谁没有个手懒的时候用个缩写咋了你有意见啊？同理RightMotor(右电机)的缩写也就是rmt。由于左电机是由3，2号PWM口控制的，右电机是由5，4号PWM口控制的，你至少告诉它自己是那个口控制的吧？奥对忘告诉你了...  
+我们先看一下FIRA官方提供的开发板长什么样子...
+![FIRABoard](https://github.com/visualDust/FIRAHandling/blob/master/Documents/FIRABoard.jpg"区块链")
 
 </font>
