@@ -16,12 +16,14 @@ byte           vibrate = 0;
 class Grobot {
   private:
     Gmotor *mtl, *mtr;
+    Servo   armServo, handServo;
     uc      s1, s2, s3, s4, s5;
-    uc      hunterL = s2, hunterM = s3, hunterR = 4;
+    uc      hunterL = s2, hunterM = s3, hunterR = s4;
     UTFT *  GLCD       = new UTFT(QD_TFT180A, 51, 52, 32, 34, 33);
     PS2X *  controller = new PS2X();
     int     threshold[6];
     int     lineCrossTime = 70;
+    int     negativeSpeed = 100, negativeRuntime = 50;
 
   public:
     Grobot();
@@ -31,12 +33,14 @@ class Grobot {
     void configTFT(byte, int, int, int, int, byte, int);
     byte configController(uc, uc, uc, uc);
     void configController(uc, uc, uc, uc, bool, bool);
+    void configServo(int, int);
 
     void testSensors();
     void setThreshold(int, int, int, int, int);
     void setThreshold(int, int);
     int  getThreshold(int);
     void setLineCrossTime(int);
+    void setNegativeSpeed(int);
     void setHunterSensor(int, int, int);
 
     int     getSensorVal(uc);
@@ -87,6 +91,11 @@ void Grobot::configController(
     this->controller->config_gamepad(clk, cmd, att, dat, pressures, rumble);
 }
 
+void Grobot::configServo(int armPin, int handPin) {
+    this->armServo.attach(armPin);
+    this->handServo.attach(handPin);
+}
+
 void Grobot::waitForButtonPress(ui button) {
     while (true) {
         delay(50);
@@ -104,7 +113,7 @@ void Grobot::waitForButtonRelease(ui button) {
     }
 }
 /*Here are all buttons
-  PSB_SELECT      0x0001
+PSB_SELECT      0x0001
 PSB_L3          0x0002
 PSB_R3          0x0004
 PSB_START       0x0008
@@ -142,6 +151,8 @@ void Grobot::setLineCrossTime(int lineCrossTime) {
     this->lineCrossTime = lineCrossTime;
 }
 
+void Grobot::setNegativeSpeed(int speed) { this->negativeSpeed = speed; }
+
 int Grobot::getSensorVal(uc pin) { return analogRead(pin); }
 
 Gmotor *Grobot::getMotor(uc motor) {
@@ -171,10 +182,10 @@ void Grobot::turnLeft(int speed, int mode) {
         this->mtr->setSpeed(speed);
         break;
     case 1:
-        this->mtl->setSpeed(-speed);
+        this->mtr->setSpeed(speed);
         break;
     case 2:
-        this->mtr->setSpeed(speed);
+        this->mtl->setSpeed(-speed);
         break;
     default:
         this->mtl->setSpeed(-speed);
@@ -196,10 +207,10 @@ void Grobot::turnRight(int speed, int mode) {
         this->mtl->setSpeed(speed);
         break;
     case 1:
-        this->mtr->setSpeed(-speed);
+        this->mtl->setSpeed(speed);
         break;
     case 2:
-        this->mtl->setSpeed(speed);
+        this->mtr->setSpeed(-speed);
         break;
     default:
         this->mtr->setSpeed(-speed);
@@ -214,7 +225,7 @@ void Grobot::turnRight(int speed, int mode) {
     delay(50);
     while (analogRead(this->s3) > this->threshold[3])
         ;
-    this->stop(0);
+    this->stop(1);
 }
 
 void Grobot::setHunterSensor(int hunterNumL, int hunterNumM, int hunterNumR) {
@@ -232,12 +243,23 @@ void Grobot::huntLine(int baseSpeed, int subSpeed, int lineCnt) {
             else
                 mtl->setSpeed(baseSpeed), mtr->setSpeed(baseSpeed + subSpeed);
         }
-        this->walkTime(baseSpeed + subSpeed, this->lineCrossTime);
+        // this->walkTime(baseSpeed + subSpeed, this->lineCrossTime);
         this->stop(0);
     }
 }
 
 void Grobot::stop(int mode) {
+    if (mode == 1) {
+        this->mtl->setSpeed(
+            this->mtl->getSpeed() == 0
+                ? 0
+                : (this->mtl->getSpeed() < 0 ? negativeSpeed : -negativeSpeed));
+        this->mtr->setSpeed(
+            this->mtl->getSpeed() == 0
+                ? 0
+                : (this->mtl->getSpeed() < 0 ? negativeSpeed : -negativeSpeed));
+        delay(negativeRuntime);
+    }
     this->mtl->stop(mode);
     this->mtr->stop(mode);
 }
@@ -324,7 +346,7 @@ void Grobot::testSensors() {
     this->GLCD->setBackColor(0, 0, 0);
     this->GLCD->setColor(255, 255, 255);
     for (int i = 1; i <= 5; i++) {
-        if (i == 2 || i == 4)
+        if (i == 1 || i == 5)
             continue;
         this->GLCD->setBackColor(0, 162, 232);
         this->GLCD->setColor(0, 0, 0);

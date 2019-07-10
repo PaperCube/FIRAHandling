@@ -4,10 +4,9 @@ class Gmotor {
   private:
     int    cnt1, cnt2;
     int    speed;
-    int    solid         = 0;
-    double prop          = 1.0;
-    int    direc         = 0;
-    int    negativeSpeed = 200, negativeRuntime = 100;
+    int    solid = 0;
+    double prop  = 1.0;
+    int    direc = 0;
 
   public:
     Gmotor(int, int); // initial your motor with two pwm output pin num.
@@ -15,8 +14,6 @@ class Gmotor {
     void stop(int mode);
     void setSolid(int); // when you try to use stop() method, this param decides
                         // the way how your motor stop
-    void setNegativeSpeed(int);
-    void setNegativeRuntime(int);
 
     void setSpeed(int); // no more than 255 please
     int  getSpeed();
@@ -33,13 +30,7 @@ Gmotor::Gmotor(int cnt1, int cnt2) {
 }
 
 void Gmotor::stop(int mode) {
-    if (mode == 1) {
-        this->setSpeed(
-            this->getSpeed == 0
-                ? 0
-                : (this->getSpeed() < 0 ? negativeSpeed : -negativeSpeed));
-        delay(negativeRuntime);
-    } else if (mode == 2) {
+    if (mode != 0) {
         double conc = this->speed / -60;
         for (int i = 0; i <= 60; i++) {
             this->speed += conc;
@@ -60,14 +51,6 @@ void Gmotor::setSpeed(int speed) {
     this->speed = speed;
     analogWrite(cnt1, 0);
     analogWrite(cnt2, (double)(this->speed * prop));
-}
-
-void setNegativeSpeed(int negativeSpeed) {
-    this->negativeSpeed = negativeSpeed;
-}
-
-void setNegativeRuntime(int negativeRuntime) {
-    this->negativeRuntime = negativeRuntime;
 }
 
 int Gmotor::getSpeed() { return this->speed; }
