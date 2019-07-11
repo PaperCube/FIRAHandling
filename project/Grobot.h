@@ -55,6 +55,7 @@ class Grobot {
     int     getSensorVal(uc);
     Gmotor *getMotor(uc);
 
+    void wait(int);
     void walkTime(int, int);
     void walkBlock(int, int);
     void turnLeft(int, int);
@@ -167,6 +168,8 @@ int Grobot::getSensorVal(uc pin) { return analogRead(pin); }
 Gmotor *Grobot::getMotor(uc motor) {
     return motor == 'l' ? this->mtl : this->mtr;
 }
+
+void Grobot::wait(int ms) { delay(ms); }
 
 void Grobot::walkTime(int speed, int ms) {
     this->mtl->setSpeed(speed);
