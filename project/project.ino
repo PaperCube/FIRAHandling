@@ -6,8 +6,7 @@ Gmotor *lmt = new Gmotor(3, 2), *rmt = new Gmotor(5, 4);
 void setup() {
     Serial.begin(9600);
     robot->configTFT(QD_TFT180A, 51, 52, 32, 34, 0, 33);
-    robot->configController(PS2_CLK, PS2_CMD, PS2_SEL, PS2_DAT, pressures,
-                            rumble);
+    robot->configController(A14, A7, A13, A6, true, true);
     robot->configMotor(lmt, rmt);
     lmt->setProp(1);
     rmt->setProp(1);

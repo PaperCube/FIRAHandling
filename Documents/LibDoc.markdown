@@ -4,7 +4,7 @@ Author VisualDust , 201907092259LastUpdate
 <font face="等线" size=5>
 《FIRAHandlerG库从入门到放弃全教程》 
 </font>   
-<font face="等线" size=3>
+<font face="等线" size=4>
 * 以下是入门部分
 > <Gmotor.h>的参数说明  
 ```cpp
@@ -93,9 +93,13 @@ int     negativeSpeed = 100,negativeRuntime = 50; //急停反转功率和反转�
     void enterManualMode(); //调用这个方法进入手动遥控模式
 ```
 ---
-看完入门部分有什么感想？是不是完全没看懂？那就对了。我自己也看不懂。接下来我们进入放弃部分  
+<font face ="等线" size=5 color=grey>  
+看完入门部分有什么感想？是不是完全没看懂？那就对了。我自己也看不懂。接下来我们进入放弃部分 (没错这才是有用的部分上面是用来撑字数的)
 
+<font face ="等线" size=5 color=red>  
 ---
+# FBI Warning : 前方核能
+<font face ="等线" size=4 color = black>  
 * 以下是放弃部分
 > Getting Start 入门  
 
@@ -103,7 +107,7 @@ int     negativeSpeed = 100,negativeRuntime = 50; //急停反转功率和反转�
 ```cpp
 #include "Grobot.h"
 ```
-好了，我们可以想一下了，机器人长什么样子来着.....我们新建一个机器人...  
+好了，包含这个头文件能够构造时空断裂(我瞎扯的)以便于我们的脑海中生成一台机器人，机器人长什么样子来着.....那么我们新建一个机器人...  
 ```cpp
 Grobot *robot = new Grobot();
 ```
@@ -114,23 +118,80 @@ Gmotor *lmt = new Gmotor(3, 2), *rmt = new Gmotor(5, 4);
 ```
 lmt啥玩意啊你逗我呢？！  
 别别别急啊Left(左)MoTor(电机)缩写不就变成lmt了吗，谁没有个手懒的时候用个缩写咋了你有意见啊？同理RightMotor(右电机)的缩写也就是rmt。由于左电机是由3，2号PWM口控制的，右电机是由5，4号PWM口控制的，你至少告诉它自己是那个口控制的吧？奥对忘告诉你了...  
-我们先看一下FIRA官方提供的开发板长什么样子...
-![FIRABoard](https://raw.githubusercontent.com/visualDust/FIRAHandling/master/Documents/FIRABoard.jpg)  
+我们先看一下FIRA官方提供的开发板长什么样子...(提示)
+![FIRABoard](FIRABoard.jpg)
 对对对！没错就是这个！
 刚才我们提到控制电机的pwm口...emmmm....你看左下方隐约写着PWM D2-D7 PWM字样的那一排，蓝色的就是PWM接口了。因为过一会我们还要往机器人身上安装传感器，而传感器用的是analog口，也就是左侧好几排黄色的接口---所以在这里我们把它们加以区分 :  
 蓝色的这个pwm口可以输出pwm信号，所以能向电机驱动模块传递转速信号。  
 黄色的analog接口可以读取pwm信号，所以能够读取传感器传来的信息。  
 总之，蓝色的能输出，黄色的能读入。嘿嘿，想想看如果把这两个接在一起.....  
 啊呸我在想些什么！  
-回归正题，我们说到....奥对，我们新建了两个电机！光新建了不行啊我们还得把它们安装到你的机器人上:  
+回归正题，我们说到....奥对，我们新建了两个电机！光新建了不行啊我们还得把它们安装到你的机器人上! void setup你应该知道吧，那么试试看在setup里写下这句话。什么你不知道什么是setup？  
+
+---
+啊....好吧，当你新建一个arduino空程序时，会自动生成这两个方法(,method,也叫函数,function):
+```cpp
+void setup(){}
+```
+```cpp
+void loop(){}
+```
+这两个方法从字面意思理解,setup就是"建立"的意思。当你的arduino开机时，"会首先运行初始化也代码"，也就是会首先运行setup里面的内容。  
+而loop字面上是循环的意思。当arduino执行完setup之后，会进入loop，并循环运行里面的代码。唯一的跳出条件是return。
+所以，我们进行电机配置、显示屏配置等工作都需要在"初始化"也就是setup的时候做。
+
+---
+
+好了我们回到正题。刚才说怎么把电机链接到你的机器人上来着：
 ```cpp
 robot->configMotor(lmt, rmt);
 ```  
 config意思是配置，motor意思是电机。(可别写错了大小写昂，Motor的M要大写。以后我们写什么都要注意大小写别弄错了...)连起来就是配置电机的意思。也就是，我们把刚才创建的左电机lmt和右电机rmt配置到了机器人上。至于中间那个箭头(->)....那个是指针...呸，别想指针，你可以理解成机器人接下来要做一件事的时候用一个箭头为它指明方向！比如说"机器人->吃屎..." 呸我什么也没说。  
+
 好的...我再看看...你看这个板子上是不是有个显示屏啊，我们得把这个也安装上，才显得我们足够狂飙炫酷吊炸天。  
 ```cpp
  robot->configTFT(QD_TFT180A, 51, 52, 32, 34, 0, 33);
 ```  
-还记得config是什么意思吧，对是配置的意思。至于这个TFT，是显示器的一种。configTFT就是给机器人搞一个TFT显示屏。这个显示屏的具体型号是QD_TFT180A，我给你填好了你记住
+还记得config是什么意思吧，对是配置的意思。至于这个TFT，是显示器的一种。configTFT就是给机器人搞一个TFT显示屏。这个显示屏的具体型号是QD_TFT180A，我给你填好了你记住就行。  
+
+那么接下来是遥控器的接收器。我们知道，这个比赛项目有自动和手动两个部分。手动部分当然是要遥控的，所以需要一个遥控器和一个遥控器的接收器。我们试着在setup里为你的机器人配置一个接收器:   
+```cpp
+ robot->configController(A14, A7, A13, A6, true, true);
+ ```
+ 再复习一次config什么意思来着？什么你忘了？来这位同学出去站着去。  
+ 咳咳剩下的同学我们继续。不想出去陪他站着你们就好好背单词。是的Controller是控制器的意思。词根是control(控制)，加个er表示控制器。所以configController连一起就是"配置控制器"的意思。至于里面填了啥，你也不用管，都给你填好了复制粘贴就行。想了解参数含义的可以进PS2XLIB库里面暗中观察一下。  
+
+ 搞完了控制器我们来看看各个传感器。你的机器人上应该有5个传感器用来巡线以及进行各种判定，我们习惯上直接插在analog口的，从上往下看，五个传感器从左到右依次是S1(也就是Sensor1),S2,S3,S4,S5,分别插在A1,A2,A3,A4,A5上。那么代码就是：  
+```cpp
+    robot->configSensor(A1, A2, A3, A4, A5);
+```  
+会有老师教你们接线的，不用记住。这些config有关的你们都可以复制粘贴。
+  
+<font color=red>这时候你的所有代码应该已经长成这个样子了：</font>  
+```cpp
+#include "Grobot.h"
+
+Grobot *robot = new Grobot();
+Gmotor *lmt = new Gmotor(3, 2), *rmt = new Gmotor(5, 4);
+
+void setup()
+{
+    robot->configMotor(lmt, rmt);
+    robot->configTFT(QD_TFT180A, 51, 52, 32, 34, 0, 33);
+    robot->configController(A14, A7, A13, A6, true, true);
+    robot->configSensor(A1, A2, A3, A4, A5);
+}
+
+void loop()
+{
+
+}
+``` 
+<font color=red>如果不一样的话，请立即检查自己哪里理解错了并立马报警</font> 
+
 
 </font>
+<font color=black>
+
+> Contributors
+<table><tr><td align="center"><a href="https://github.com/VisualDust"><img src="Icon.VisualDust.png" width="300px;" alt="VisualDust"/><br /><sub><b>VisualDust</b></sub></a><br /><a href="https://github.com/VisualDust" title="Code">💻</a> <a href="#design-jakedex" title="Design">🎨</a> <a href="https://github.com/VisualDust/FIRAHandling/commits?author=VisualDust" title="Documentation">📖</a> <a href="#question-mfix22" title="Answering Questions">💬</a> <a href="#infra-briandennis" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#review-VisualDust" title="Reviewed Pull Requests">👀</a></td>
