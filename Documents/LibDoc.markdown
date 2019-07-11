@@ -98,9 +98,13 @@ int     negativeSpeed = 100,negativeRuntime = 50; //急停反转功率和反转�
 
 <font face ="等线" size=5 color=red>  
 ---
+
 # FBI Warning : 前方核能
+
 <font face ="等线" size=4 color = black>  
+
 * 以下是放弃部分
+
 > Getting Start 入门  
 
 来试试看在脑子里想象一个机器人首先我们需要一个便于我们想象一个机器人的环境。所以....
