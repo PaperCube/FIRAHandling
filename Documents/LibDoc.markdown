@@ -335,5 +335,8 @@ void loop()
 
 <font color=black>
 
-> Contributors
+> Contributors  
+
+报告，作者已失去生理活性。
+
 <table><tr><td align="center"><a href="https://github.com/VisualDust"><img src="Icon.VisualDust.png" width="200px;" alt="VisualDust"/><br /><sub><b>VisualDust</b></sub></a><br /><a href="https://github.com/VisualDust" title="Code">💻</a> <a href="#design-jakedex" title="Design">🎨</a> <a href="https://github.com/VisualDust/FIRAHandling/commits?author=VisualDust" title="Documentation">📖</a> <a href="#question-mfix22" title="Answering Questions">💬</a> <a href="#infra-briandennis" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#review-VisualDust" title="Reviewed Pull Requests">👀</a></td>
