@@ -96,7 +96,7 @@ int     negativeSpeed = 100,negativeRuntime = 50; //急停反转功率和反转�
 <font face ="等线" size=5 color=grey>  
 看完入门部分有什么感想？是不是完全没看懂？那就对了。我自己也看不懂。接下来我们进入放弃部分 (没错这才是有用的部分上面是用来撑字数的)
 
-<font face ="等线" size=5 color=red>  
+<font face ="等线" size=5 color=C00000>  
 ---
 
 # FBI Warning : 前方核能
@@ -122,7 +122,7 @@ Gmotor *lmt = new Gmotor(3, 2), *rmt = new Gmotor(5, 4);
 ```
 lmt啥玩意啊你逗我呢？！  
 别别别急啊Left(左)MoTor(电机)缩写不就变成lmt了吗，谁没有个手懒的时候用个缩写咋了你有意见啊？同理RightMotor(右电机)的缩写也就是rmt。由于左电机是由3，2号PWM口控制的，右电机是由5，4号PWM口控制的，你至少告诉它自己是那个口控制的吧？奥对忘告诉你了...  
-我们先看一下FIRA官方提供的开发板长什么样子...(提示)
+我们先看一下FIRA官方提供的开发板长什么样子...
 ![FIRABoard](FIRABoard.jpg)
 对对对！没错就是这个！
 刚才我们提到控制电机的pwm口...emmmm....你看左下方隐约写着PWM D2-D7 PWM字样的那一排，蓝色的就是PWM接口了。因为过一会我们还要往机器人身上安装传感器，而传感器用的是analog口，也就是左侧好几排黄色的接口---所以在这里我们把它们加以区分 :  
@@ -171,7 +171,7 @@ config意思是配置，motor意思是电机。(可别写错了大小写昂，Mo
 ```  
 会有老师教你们接线的，不用记住。这些config有关的你们都可以复制粘贴。
   
-<font color=red>这时候你的所有代码应该已经长成这个样子了：</font>  
+<font color=C00000>这时候你的所有代码应该已经长成这个样子了：</font>  
 ```cpp
 #include "Grobot.h"
 
@@ -191,7 +191,7 @@ void loop()
 
 }
 ``` 
-<font color=red>如果不一样的话，请立即检查自己哪里理解错了并立马报警</font> 
+<font color=C00000>如果不一样的话，请立即检查自己哪里理解错了并立马报警</font> 
 
 
 </font>
