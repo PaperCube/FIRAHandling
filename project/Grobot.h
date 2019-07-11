@@ -5,6 +5,15 @@
 #include <PS2X_lib.h>
 #include <Servo.h>
 #include <UTFT.h>
+
+#define PS2_DAT A6  // 14
+#define PS2_CMD A7  // 15
+#define PS2_SEL A13 // 16
+#define PS2_CLK A14 // 17
+
+#define pressures true
+#define rumble true
+
 typedef unsigned char uc;
 typedef unsigned int  ui;
 

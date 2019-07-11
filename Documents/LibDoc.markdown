@@ -4,6 +4,7 @@ Author VisualDust , 201907092259LastUpdate
 <font face="等线" size=5>
 《FIRAHandlerG库从入门到放弃全教程》 
 </font>   
+<font face="等线" size=3>
 * 以下是入门部分
 > <Gmotor.h>的参数说明  
 ```cpp
@@ -114,6 +115,22 @@ Gmotor *lmt = new Gmotor(3, 2), *rmt = new Gmotor(5, 4);
 lmt啥玩意啊你逗我呢？！  
 别别别急啊Left(左)MoTor(电机)缩写不就变成lmt了吗，谁没有个手懒的时候用个缩写咋了你有意见啊？同理RightMotor(右电机)的缩写也就是rmt。由于左电机是由3，2号PWM口控制的，右电机是由5，4号PWM口控制的，你至少告诉它自己是那个口控制的吧？奥对忘告诉你了...  
 我们先看一下FIRA官方提供的开发板长什么样子...
-![FIRABoard](https://github.com/visualDust/FIRAHandling/blob/master/Documents/FIRABoard.jpg"区块链")
+![FIRABoard](https://raw.githubusercontent.com/visualDust/FIRAHandling/master/Documents/FIRABoard.jpg)  
+对对对！没错就是这个！
+刚才我们提到控制电机的pwm口...emmmm....你看左下方隐约写着PWM D2-D7 PWM字样的那一排，蓝色的就是PWM接口了。因为过一会我们还要往机器人身上安装传感器，而传感器用的是analog口，也就是左侧好几排黄色的接口---所以在这里我们把它们加以区分 :  
+蓝色的这个pwm口可以输出pwm信号，所以能向电机驱动模块传递转速信号。  
+黄色的analog接口可以读取pwm信号，所以能够读取传感器传来的信息。  
+总之，蓝色的能输出，黄色的能读入。嘿嘿，想想看如果把这两个接在一起.....  
+啊呸我在想些什么！  
+回归正题，我们说到....奥对，我们新建了两个电机！光新建了不行啊我们还得把它们安装到你的机器人上:  
+```cpp
+robot->configMotor(lmt, rmt);
+```  
+config意思是配置，motor意思是电机。(可别写错了大小写昂，Motor的M要大写。以后我们写什么都要注意大小写别弄错了...)连起来就是配置电机的意思。也就是，我们把刚才创建的左电机lmt和右电机rmt配置到了机器人上。至于中间那个箭头(->)....那个是指针...呸，别想指针，你可以理解成机器人接下来要做一件事的时候用一个箭头为它指明方向！比如说"机器人->吃屎..." 呸我什么也没说。  
+好的...我再看看...你看这个板子上是不是有个显示屏啊，我们得把这个也安装上，才显得我们足够狂飙炫酷吊炸天。  
+```cpp
+ robot->configTFT(QD_TFT180A, 51, 52, 32, 34, 0, 33);
+```  
+还记得config是什么意思吧，对是配置的意思。至于这个TFT，是显示器的一种。configTFT就是给机器人搞一个TFT显示屏。这个显示屏的具体型号是QD_TFT180A，我给你填好了你记住
 
 </font>
