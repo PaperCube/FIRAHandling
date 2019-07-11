@@ -16,6 +16,7 @@ void setup() {
     robot->setNegativeSpeed(100);
     robot->configSensor(A1, A2, A3, A4, A5);
     robot->initialRobot();
+
     robot->pair();
 }
 

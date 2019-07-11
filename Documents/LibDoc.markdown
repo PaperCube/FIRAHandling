@@ -96,10 +96,13 @@ int     negativeSpeed = 100,negativeRuntime = 50; //急停反转功率和反转�
 <font face ="等线" size=5 color=grey>  
 看完入门部分有什么感想？是不是完全没看懂？那就对了。我自己也看不懂。接下来我们进入放弃部分 (没错这才是有用的部分上面是用来撑字数的)
 
-<font face ="等线" size=5 color=C00000>  
 ---
 
+<font face ="等线" size=5 color=C00000>  
+
 # FBI Warning : 前方核能
+
+</font>
 
 <font face ="等线" size=4 color = black>  
 
@@ -169,9 +172,25 @@ config意思是配置，motor意思是电机。(可别写错了大小写昂，Mo
 ```cpp
     robot->configSensor(A1, A2, A3, A4, A5);
 ```  
-会有老师教你们接线的，不用记住。这些config有关的你们都可以复制粘贴。
+会有老师教你们接线的，不用记住。这些config有关的你们都可以复制粘贴。  
+
+那么，这个机器人差不多成型了，接下来我们要为它注入灵魂，欸嘿嘿...  
+```cpp
+    robot->initialRobot();
+```
+initial是初始化的意思，Robot我们再复习一次是机器人的意思。在setup里吟唱这句咒语会为你的机器人注入灵魂。一定不要忘了加上这句话！否则你的机器人将会成为一个没有灵魂的灭世者的存在  
+
+这么强大的存在，当然要据为己有！现在我们来构筑灵魂链接！！！
+```cpp
+    robot->pair();
+```  
+呃...好中二啊我...其实就是跟遥控器配个对....pair的意思就是配对啦...这句话一写上你的机器人就会等待你的遥控器配对，把遥控器打开按下上面的SELECT按钮，你的机器人显示屏上就会显示配对提示。注意，这个方法会在内部用到显示屏和遥控器接收器，所以在配对之前必须已经为机器人配置了显示屏和控制器，并且你的机器人已经注入了灵魂(滑稽)。
   
-<font color=C00000>这时候你的所有代码应该已经长成这个样子了：</font>  
+<font color=C00000>
+
+* 这时候你的所有代码应该已经长成这个样子了：
+</font>  
+
 ```cpp
 #include "Grobot.h"
 
@@ -184,6 +203,8 @@ void setup()
     robot->configTFT(QD_TFT180A, 51, 52, 32, 34, 0, 33);
     robot->configController(A14, A7, A13, A6, true, true);
     robot->configSensor(A1, A2, A3, A4, A5);
+    robot->initialRobot();
+    robot->pair();
 }
 
 void loop()
@@ -191,11 +212,51 @@ void loop()
 
 }
 ``` 
-<font color=C00000>如果不一样的话，请立即检查自己哪里理解错了并立马报警</font> 
+<font color=C00000>
 
+* 如果不一样的话，请立即检查自己哪里理解错了并立马报警
+
+</font>   
+
+嗯？这位同学把手放下，你想问什么？奥，奥好的你是说为什么没有在setup里看到熟悉的pinMode之类的对吧？好的关于这个....你可以理解成其实你的机器人帮你做了这件事情。在你配置各个部分的时候你的机器人就会自行处理这些，用不着您大驾光临自己写了。是不是很方便？  
+
+---
+
+## 现在摆在你们面前的，有一个坏消息和一个更坏的消息。坏消息是接下来我们才开始真正的学习。更坏的消息是上面这一堆看上去复杂的东西你们都白学了，因为它们都是固定不变的，到时候直接复制粘贴就行的。  
+怎么样是不是很想打我？欸嘿嘿嘿......
+
+---
+
+# 好的前排这位已经快吐了的同学，请你立马打起精神来，我们现在开始真正的学习！也就是到时候你们要写的，void loop(){} 里面的内容！
+
+> 这个标题是用来充字数的并表示我们即将开始正式课程
+
+咳咳....(喝水的声音)好的欢迎回来。在刚才的课程中我们已经学习了没有用的内容...(低头躲过飞过来的香蕉皮和拖鞋)，那么现在...啊！(被西红柿爆头)  
+保安请把这位同学带走出去站着去  
+好的我们继续。首先我们来熟悉一下场地。  
+
+![空场地](PlayGround_Empty.png)
+
+这是场地和场地上可能出现的物体的尺寸。我们来把物体随机乱放....
+
+![有目标物的场地](PlayGround_WithObj.png)
+
+绿色实心是目标物，黄色的当然就是目标区域了。什么你听不明白？？？给我出去站着再看一遍比赛规则去。  
+我们先试着把场地清空：
+
+![空场地](PlayGround.png)
+
+现在我们将通过完成一些小任务来学习。
+
+> 任务 I : 直角走位 ！
+
+![Mission1](Mission_1.png)
+
+现在，你需要让你的机器人按照如图所示的轨迹进行移动。怎么办呢？
 
 </font>
+
 <font color=black>
 
 > Contributors
-<table><tr><td align="center"><a href="https://github.com/VisualDust"><img src="Icon.VisualDust.png" width="300px;" alt="VisualDust"/><br /><sub><b>VisualDust</b></sub></a><br /><a href="https://github.com/VisualDust" title="Code">💻</a> <a href="#design-jakedex" title="Design">🎨</a> <a href="https://github.com/VisualDust/FIRAHandling/commits?author=VisualDust" title="Documentation">📖</a> <a href="#question-mfix22" title="Answering Questions">💬</a> <a href="#infra-briandennis" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#review-VisualDust" title="Reviewed Pull Requests">👀</a></td>
+<table><tr><td align="center"><a href="https://github.com/VisualDust"><img src="Icon.VisualDust.png" width="200px;" alt="VisualDust"/><br /><sub><b>VisualDust</b></sub></a><br /><a href="https://github.com/VisualDust" title="Code">💻</a> <a href="#design-jakedex" title="Design">🎨</a> <a href="https://github.com/VisualDust/FIRAHandling/commits?author=VisualDust" title="Documentation">📖</a> <a href="#question-mfix22" title="Answering Questions">💬</a> <a href="#infra-briandennis" title="Infrastructure (Hosting, Build-Tools, etc)">🚇</a> <a href="#review-VisualDust" title="Reviewed Pull Requests">👀</a></td>
