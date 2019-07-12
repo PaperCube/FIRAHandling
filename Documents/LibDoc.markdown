@@ -592,6 +592,7 @@ void loop()
 [![Grobot.h](View_GrobotH_Button.png)](https://github.com/visualDust/FIRAHandling/blob/master/Libiaries/Grobot.h)  
 [![Gmotor.h](View_GmotorH_Button.png)](https://github.com/visualDust/FIRAHandling/blob/master/Libiaries/Gmotor.h)
 [![ReportBugsForLib](ReportBugsForLib.png)](https://github.com/visualDust/FIRAHandling/issues/3)  
+[![ChatGroup](ChatGroup.png)](https://github.com/visualDust/FIRAHandling/issues/4)
 [![BackToTop](BackTo_DocTop_Button.png)](https://github.com/visualDust/FIRAHandling/blob/master/Documents/LibDoc.markdown)
 [![BackToMainPage](BackTo_MainPage_Button.png)](https://github.com/visualDust/FIRAHandling)
 
