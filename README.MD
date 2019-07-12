@@ -9,7 +9,7 @@
 > 
 [![entrance](TutorialButton.png)](https://github.com/visualDust/FIRAHandling/blob/master/Documents/LibDoc.markdown)
 [![entrance](ChatGroup.png)](https://github.com/visualDust/FIRAHandling/issues/4)
-
+ 
 > LastUpdate 最近一次更新内容
 
 * 版本号201907121108
@@ -28,7 +28,7 @@
 
 > 过往更新
 
-* 无过往更新
+* 无过往更新???
 
 ---
 
