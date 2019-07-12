@@ -184,7 +184,7 @@ initial是初始化的意思，Robot我们再复习一次是机器人的意思�
 ```cpp
     robot->pair();
 ```  
-呃...好中二啊我...其实就是跟遥控器配个对....pair的意思就是配对啦...这句话一写上你的机器人就会等待你的遥控器配对，把遥控器打开按下上面的SELECT按钮，你的机器人显示屏上就会显示配对提示。注意，这个方法会在内部用到显示屏和遥控器接收器，所以在配对之前必须已经为机器人配置了显示屏和控制器，并且你的机器人已经注入了灵魂(滑稽)。
+呃...好中二啊我...其实就是跟遥控器配个对....pair的意思就是配对啦...这句话一写上你的机器人就会等待你的遥控器配对，当你的机器人屏幕上显示正在配对时，把遥控器打开按下上面的SELECT按钮，你的机器人显示屏上就会显示配对提示。注意，这个方法会在内部用到显示屏和遥控器接收器，所以在配对之前必须已经为机器人配置了显示屏和控制器，并且你的机器人已经注入了灵魂(滑稽)。
   
 <font color=C00000>
 
@@ -413,6 +413,7 @@ void setup()
     robot->configSensor(A1, A2, A3, A4, A5);
     robot->initialRobot();
     robot->pair();
+    robot->testSensors(); //注意，多了这一行
 }
 
 void loop()
@@ -426,6 +427,32 @@ void loop()
     robot->stop(1);
 }
 ```
+什么？多了的那行
+```cpp
+robot->testSensors();
+```
+是干嘛用的？其实大家知道，你的机器人要是需要巡线，就需要知道黑线和白色区域上传感器的数值。其具体格式为：
+```cpp
+机器人 -> testSensors();
+```
+这个方法不需要传入任何参数。当你的机器人运行到这个方法(函数)时，你会看到以下画面：  
+
+![SensorTest_1](SensorTest_1.jpg)
+
+下面写着"Now test sensors"就是现在测试传感器值的意思  
+再看"Value for S 2W"这一行，S 2意思是2号传感器，W是White的缩写，意思是白色。整句话的意思就是"二号传感器在白色区域的值"，这时候你需要把你的机器人放在场地上，并保证二号传感器是在白色区域。  
+我们复习一下，从上往下看传感器从左到右为S1,S2,S3,S4,S5,从车底看从右到左为S1,S2,S3,S4,S5。在白色区域的传感器值应该很大，一般800以上。  
+准备好了以后长按1秒遥控器上的START按钮。你会看到画面变了：
+
+![SensorTest_2](SensorTest_2.jpg)
+
+没错，屏幕上方出现了一行小字"White:197"，意思就是2号传感器的白色值为197(当然，你自己测试的时候肯定不是这个数)，同时原来下方的的"2W"变成了"2B"。B是Black的缩写，意思为黑色。有的同学已经明白了，现在该测试2号传感器在黑线上的值了！于是你把2号传感器放到了黑线上，稍作位置上的调整并找到了 最小值 。注意，是尽量找最小值，这样更加精确。再次按下1秒遥控器上的START按钮后，你发现画面又变了：
+
+![SensorTest_3](SensorTest_3.jpg)
+
+看看，3W代表什么？这下不用我教了吧...你可以自行完成剩下的测试内容，你的机器人将会自动计算出黑白阈值并记住。    
+根据程序内容，你的机器人将会在6秒多以后开始运行，注意把它放到正确的位置哦  
+
 好了，插上下载线然后试试看！
 
 ---
@@ -451,22 +478,98 @@ void setup()
     robot->configSensor(A1, A2, A3, A4, A5);
     robot->initialRobot();
     robot->pair();
+    robot->testSensors();
 }
 //上面这些代码就像我说的，一点都没变，复制粘贴就行。
 
 void loop()
 {
     robot->huntLine(40,50,1);   //巡线一格
-    robot->turnLeft(90,1);      //左转
+    robot->turnLeft(130,1);      //左转
     robot->huntLine(40,50,1);   //巡线一格
-    robot->turnLeft(90,1);      //左转
+    robot->turnLeft(130,1);      //左转
     robot->huntLine(40,50,1);   //巡线一格
-    robot->turnLeft(90,1);      //左转
+    robot->turnLeft(130,1);      //左转
     robot->huntLine(40,50,1);   //巡线一格
-    robot->turnLeft(90,1);      //左转
+    robot->turnLeft(130,1);      //左转
 }
 ```
-emmmm如果我告诉你我没写完你会不会打我？
+试试看，它是不是在原地转圈？让它再转一会。如果转了好半天都没问题，说明你的程序已经足够稳定了。如果转了一会出现了穿线、找不着线等故障，你就需要调试你的巡线和转向方法的参数了。
+
+> 任务 IV : 调试
+
+行了别抱怨了，出现故障是正常的事情。我们接下来将会试着调试你在任务III里遇到的问题。  
+首先，调试的时候你更愿意节省时间，所以我们可以暂时删除没有用的消耗时间的内容。  
+比如，你发现启动画面时间较长，而且还要等遥控器配对，还要测试传感器之类的，反正测试一次要花大量时间等待，这不合算。然而只是巡线的话其实可以不连接遥控器，测试传感器也可以跳过并手动设置阈值。所以，你在void setup()里更改了如下内容 :  
+```cpp
+    //robot->pair();
+    //robot->testSensors();
+```
+注意了吗？你在这两行前面加了两条"/"，这叫代码注释，加了//的内容在机器人运行时会被跳过，也就是不会运行。但是这样的话机器人就不知道黑白线的值了啊？别着急，我们将为它手动设置。  
+在上一次测试的过程中，你应该大概记住了各个传感器黑白值，这里我们以3号传感器为例。假设其白色值为1003，黑色值为150，那么我们为了高灵敏度不再使用平均值，而是认为阈值为900。其大致算法为：
+```cpp
+传感器阈值 = 传感器白色值 - (传感器白色值 - 传感器黑色值) / 5
+```
+差不多就是这样一个数值。这时候我们需要为传感器手动设置这个值：
+```cpp
+robot->setThreshold(3,900);
+```
+什么意思呢？set我们复习一下就是设置的意思，Threshold就是阈值的意思。连起来就是设置阈值。该方法的具体格式为：
+```cpp
+机器人 -> setThreshold(传感器编号，阈值);
+```
+由于我们这次只调试巡线，因此只会用到2,3,4号传感器。所以我们在原来代码的void setup()最后添加如下代码: 
+```cpp
+......
+void setup(){}
+......
+......
+robot->setThreshold(2,900);
+robot->setThreshold(3,900);
+robot->setThreshold(4,900);
+}
+......
+......
+```
+这样一来我们就为传感器手动设置了阈值。现在你的全部代码应该是：
+```cpp
+#include "Grobot.h"
+
+Grobot *robot = new Grobot();
+Gmotor *lmt = new Gmotor(3, 2), *rmt = new Gmotor(5, 4);
+
+void setup()
+{
+    robot->configMotor(lmt, rmt);
+    robot->configTFT(QD_TFT180A, 51, 52, 32, 34, 0, 33);
+    robot->configController(A14, A7, A13, A6, true, true);
+    robot->configSensor(A1, A2, A3, A4, A5);
+    robot->initialRobot();
+    // robot->pair();
+    // robot->testSensors();
+    robot->setThreshold(2,900);
+    robot->setThreshold(3,900);
+    robot->setThreshold(4,900);
+}
+//上面这些代码就像我说的，一点都没变，复制粘贴就行。
+
+void loop()
+{
+    robot->huntLine(40,50,1);   //巡线一格
+    robot->turnLeft(130,1);      //左转
+    robot->huntLine(40,50,1);   //巡线一格
+    robot->turnLeft(130,1);      //左转
+    robot->huntLine(40,50,1);   //巡线一格
+    robot->turnLeft(130,1);      //左转
+    robot->huntLine(40,50,1);   //巡线一格
+    robot->turnLeft(130,1);      //左转
+}
+```
+好了，这样我们就为漫长的调试节约了大量时间。  
+那么就开始调试吧！机器人转弯速度过快、巡线速度差过大或过小都可能导致丢线等问题，可以具体分析问题，调整速度或比例，再试一次。不断尝试，总能找到稳定的状态。
+
+---
+实话跟你讲我还没写完....
 
 </font>
 
@@ -484,8 +587,14 @@ emmmm如果我告诉你我没写完你会不会打我？
 
 > 附录
 
+[![ReportBugsForDoc](ReportBugsForDoc.png)](https://github.com/visualDust/FIRAHandling/issues/2)  
+[![RequestFuncForLib.h](RequestFuncForLib.png)](https://github.com/visualDust/FIRAHandling/issues/1)  
 [![Grobot.h](View_GrobotH_Button.png)](https://github.com/visualDust/FIRAHandling/blob/master/Libiaries/Grobot.h)  
-[![Gmotor.h](View_GmotorH_Button.png)](https://github.com/visualDust/FIRAHandling/blob/master/Libiaries/Gmotor.h)  
+[![Gmotor.h](View_GmotorH_Button.png)](https://github.com/visualDust/FIRAHandling/blob/master/Libiaries/Gmotor.h)
+[![ReportBugsForLib](ReportBugsForLib.png)](https://github.com/visualDust/FIRAHandling/issues/3)  
 [![BackToTop](BackTo_DocTop_Button.png)](https://github.com/visualDust/FIRAHandling/blob/master/Documents/LibDoc.markdown)
 [![BackToMainPage](BackTo_MainPage_Button.png)](https://github.com/visualDust/FIRAHandling)
 
+---
+
+[![Donate](Donate.png)]()
