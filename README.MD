@@ -1,11 +1,11 @@
-![TopBar](Documents\TopBar.png)  
+![TopBar](.\Documents\TopBar.png)  
 <font face="等线" size=5>  
 
 # Overview
 
 > Entrance for FIRAstudents 我是一名学生
 > 
-[![alt text](Documents\TutorialButton.png)](https://github.com/visualDust/FIRAHandling/blob/master/Documents/LibDoc.markdown)
+[![entrance](.\Documents\TutorialButton.png)](https://github.com/visualDust/FIRAHandling/blob/master/Documents/LibDoc.markdown)
 
 > LastUpdate 最近一次更新内容
 
