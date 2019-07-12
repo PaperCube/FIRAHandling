@@ -18,7 +18,7 @@
 续写了死亡教程  [->点击进入教程](https://github.com/visualDust/FIRAHandling/blob/master/Documents/LibDoc.markdown "点击进入教程")  
 [Grobot库](https://github.com/visualDust/FIRAHandling/blob/master/Libiaries/Grobot.h "Grobot.h")增加了舵机驱动方法  
 更新了图纸  
-加入了README.markdown
+加入了README.markdown  
 作者买了新的咖啡
 
 > 目前的硬件图纸
