@@ -31,7 +31,7 @@
 
 ---
 
-# Donate / 这.....
+# Donate
 
 [![Donate](Donate.png)]()
 
