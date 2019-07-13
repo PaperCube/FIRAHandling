@@ -606,7 +606,7 @@ void setup()
 
 void loop()
 {
-    enterManualMode();
+    robot->enterManualMode();
 }
 ```  
 在这里再次提醒大家大小写是有区分的。  
