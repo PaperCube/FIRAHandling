@@ -6,14 +6,6 @@
 #include <Servo.h>
 #include <UTFT.h>
 
-#define PS2_DAT A6  // 14
-#define PS2_CMD A7  // 15
-#define PS2_SEL A13 // 16
-#define PS2_CLK A14 // 17
-
-#define pressures true
-#define rumble true
-
 typedef unsigned char uc;
 typedef unsigned int  ui;
 
@@ -439,9 +431,8 @@ void Grobot::enterManualMode() {
             Serial.println(this->controller->Analog(PSAB_PAD_DOWN), DEC);
         }
 
-        vibrate = this->controller->Analog(
-            PSAB_CROSS); // this will set the large motor vibrate speed
-                         // based on how hard you press the blue (X) button
+        vibrate = this->controller->Analog(PSAB_CROSS);
+        vibrate = this->controller->Analog(PSAB_CIRCLE);
         if (this->controller
                 ->NewButtonState()) { // will be TRUE if any button changes
                                       // state (on to off, or off to on)
@@ -457,32 +448,41 @@ void Grobot::enterManualMode() {
                 Serial.println("Triangle pressed");
         }
 
-        if (this->controller->ButtonPressed(
-                PSB_CIRCLE)) // will be TRUE if button was JUST pressed
+        if (this->controller->ButtonPressed(PSB_CIRCLE)) {
+            // will be TRUE if button was JUST pressed
+            mtl->setProp(mtl->getProp() <= 0.95 ? mtl->getProp() + 0.05
+                                                : mtl->getProp());
+            mtr->setProp(mtr->getProp() <= 0.95 ? mtr->getProp() + 0.05
+                                                : mtr->getProp());
+            delay(50);
             Serial.println("Circle just pressed");
-        if (this->controller->NewButtonState(
-                PSB_CROSS)) // will be TRUE if button was JUST pressed OR
-                            // released
+        }
+        if (this->controller->NewButtonState(PSB_CROSS)) {
+            // will be TRUE if button was JUST pressed OR
+            // released
+            mtl->setProp(mtl->getProp() >= 0.05 ? mtl->getProp() - 0.05
+                                                : mtl->getProp());
+            mtr->setProp(mtr->getProp() >= 0.05 ? mtr->getProp() - 0.05
+                                                : mtr->getProp());
+            delay(50);
             Serial.println("X just changed");
+        }
         if (this->controller->ButtonReleased(
                 PSB_SQUARE)) // will be TRUE if button was JUST released
             Serial.println("Square just released");
 
-        if (this->controller->Button(PSB_L1) ||
-            this->controller->Button(
-                PSB_R1)) { // print stick values if either is TRUE
-            Serial.print("Stick Values:");
-            Serial.print(this->controller->Analog(PSS_LY),
-                         DEC); // Left stick, Y axis. Other options: LX, RY, RX
-            Serial.print(",");
-            Serial.print(this->controller->Analog(PSS_LX), DEC);
-            Serial.print(",");
-            Serial.print(this->controller->Analog(PSS_RY), DEC);
-            Serial.print(",");
-            Serial.println(this->controller->Analog(PSS_RX), DEC);
-            mtl->setSpeed(127 - this->controller->Analog(PSS_LY));
-            mtr->setSpeed(127 - this->controller->Analog(PSS_RY));
-        }
+        Serial.print("Stick Values:");
+        Serial.print(this->controller->Analog(PSS_LY),
+                     DEC); // Left stick, Y axis. Other options: LX, RY, RX
+        Serial.print(",");
+        Serial.print(this->controller->Analog(PSS_LX), DEC);
+        Serial.print(",");
+        Serial.print(this->controller->Analog(PSS_RY), DEC);
+        Serial.print(",");
+        Serial.println(this->controller->Analog(PSS_RX), DEC);
+        mtl->setSpeed(127 - this->controller->Analog(PSS_LY));
+        mtr->setSpeed(127 - this->controller->Analog(PSS_RY));
+
         delay(50);
     }
 }

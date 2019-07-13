@@ -12,15 +12,9 @@
  
 > LastUpdate 最近一次更新内容
 
-* 版本号201907121108
-
-<font face="等线" size =4>
-
-续写了死亡教程  [->点击进入教程](https://github.com/visualDust/FIRAHandling/blob/master/Documents/LibDoc.markdown "点击进入教程")  
-[Grobot库](https://github.com/visualDust/FIRAHandling/blob/master/Libiaries/Grobot.h "Grobot.h")增加了舵机驱动方法  
-更新了图纸  
-加入了README.markdown  
-作者买了新的咖啡
+版本号201907132059：  
+续写了死亡教程，增加了进入遥控模式的教程  [->点击进入教程](https://github.com/visualDust/FIRAHandling/blob/master/Documents/LibDoc.markdown "点击进入教程")  
+[Grobot库](https://github.com/visualDust/FIRAHandling/blob/master/Libiaries/Grobot.h "Grobot.h")增加了遥控器修改速度方法，修复了手柄摇杆的部分问题  
 
 > 目前的硬件图纸
 
@@ -28,7 +22,14 @@
 
 > 过往更新
 
-* 无过往更新???
+版本号201907121108：  
+续写了死亡教程  [->点击进入教程](https://github.com/visualDust/FIRAHandling/blob/master/Documents/LibDoc.markdown "点击进入教程")  
+[Grobot库](https://github.com/visualDust/FIRAHandling/blob/master/Libiaries/Grobot.h "Grobot.h")增加了舵机驱动方法  
+更新了图纸  
+加入了README.markdown  
+作者买了新的咖啡
+
+---
 
 ---
 

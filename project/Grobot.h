@@ -11,9 +11,6 @@
 #define PS2_SEL A13 // 16
 #define PS2_CLK A14 // 17
 
-#define pressures true
-#define rumble true
-
 typedef unsigned char uc;
 typedef unsigned int  ui;
 
@@ -279,6 +276,7 @@ void Grobot::stop(int mode) {
 void Grobot::initialRobot() {
     // error = controller->config_gamepad(PS2_CLK, PS2_CMD, PS2_SEL, PS2_DAT,
     // pressures, rumble);
+
     byte type = this->controller->readType();
     // ScreenStart
 

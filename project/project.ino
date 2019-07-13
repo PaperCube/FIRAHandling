@@ -1,5 +1,9 @@
 #include "Grobot.h"
 
+#define pressures true
+
+#define rumble true
+
 Grobot *robot = new Grobot();
 Gmotor *lmt = new Gmotor(3, 2), *rmt = new Gmotor(5, 4);
 
@@ -8,8 +12,8 @@ void setup() {
     robot->configTFT(QD_TFT180A, 51, 52, 32, 34, 0, 33);
     robot->configController(A14, A7, A13, A6, true, true);
     robot->configMotor(lmt, rmt);
-    lmt->setProp(1);
-    rmt->setProp(1);
+    lmt->setProp(0.6);
+    rmt->setProp(0.7);
     lmt->setSolid(100);
     rmt->setSolid(100);
     robot->setLineCrossTime(10);

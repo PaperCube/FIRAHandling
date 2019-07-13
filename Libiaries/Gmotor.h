@@ -15,12 +15,13 @@ class Gmotor {
     void setSolid(int); // when you try to use stop() method, this param decides
                         // the way how your motor stop
 
-    void setSpeed(int); // no more than 255 please
-    int  getSpeed();
-    void setProp(double);
-    void exchangePin(); // exchange the two controlPort
-    void gradientTo(int, int);
-    void walk(int, int);
+    void   setSpeed(int); // no more than 255 please
+    int    getSpeed();
+    void   setProp(double);
+    double getProp();
+    void   exchangePin(); // exchange the two controlPort
+    void   gradientTo(int, int);
+    void   walk(int, int);
 };
 
 Gmotor::Gmotor(int cnt1, int cnt2) {
@@ -52,6 +53,8 @@ void Gmotor::setSpeed(int speed) {
     analogWrite(cnt1, 0);
     analogWrite(cnt2, (double)(this->speed * prop));
 }
+
+double getProp() { return this->prop; }
 
 int Gmotor::getSpeed() { return this->speed; }
 
