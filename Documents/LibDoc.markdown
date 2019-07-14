@@ -625,6 +625,75 @@ void loop()
 
 ---
 
+> 任务 VI : 张牙舞爪の怪物  
+
+没有个机械手怎么抓起目标物体呢？所以我们接下来为机器人安装机械手。我们的机械手包含两个部分，一个是用来抓东西的爪子，另一个是用来抬起爪子的舵机。舵机的控制需要一个PWM端口，在使用前请注意自己的舵机是180°舵机还是360°舵机。接下来就是代码链接舵机：  
+```cpp
+robot->configServo(6,7);
+```    
+经验丰富的你应该一眼看出这句话带有config像是要放在void setup()里。对没错这句话也是用来配置机器人的，所以也放在setup里。这个方法需要两个参数，一个是手臂控制舵机链接的PWM端口编号，另一个是抓手控制舵机链接的PWM端口号。该方法的具体格式为：  
+```cpp
+机器人-> configServo(手臂控制舵机链接的PWM端口编号,抓手控制舵机链接的PWM端口号);
+```  
+光是这样还不行，你还得告诉你的机器人它的胳膊抬起、放下；手的抓握、松开分别是什么角度。要不然你的机器人容易太使劲(比如捏碎鸡蛋)或者太轻(拿不住鸡蛋)。想要告诉它这个，你得:  
+```cpp
+    robot->configHandAng(0, 165);
+    robot->configArmAng(15, 180);
+```  
+第一行Hand当然就是手的意思，Ang是Angle(角度)的缩写。所以连起来就是配置手的角度；第二行中的Arm也就是手臂的意思，其余一样。这两个方法的具体格式为：  
+```cpp
+    机器人->configHandAng(抓手张开时其控制舵机的角度, 抓手闭合时其控制舵机的角度);
+    机器人->configArmAng(机械臂放下时其控制舵机的角度, 机械臂抬起时其控制舵机的角度);
+```
+在演示代码中我填入的四个数字并不一定适用于你的机器人，这个需要你自己测一次。  
+在void loop()中，实现让你的机器人机械手产生某种动作的方法则是如下四句:  
+```cpp
+    robot -> handGrasp();   //hand(手)Grasp(抓住)
+    robot -> handRelease(); //hand(手)Release(松开)
+    robot -> armLift();     //arm(臂)Lift(抬起)
+    robot -> armPut();      //arm(臂)Put(放下)
+```  
+我觉得我应该不用多解释了吧......  
+接下来我们就来进行一次抬举任务来验证你学会了没有。  
+![Mission_6](Mission_6.png)  
+呃...这图画的有毒吧....算了不管它。直接看描述吧，就是把目标物体放在你的机器人的正前方，把机器人正对着它，让机器人往前走一段时间抓起该目标物，再回退相同时间并将其放下。如果不出意外的话，你的代码应该是：  
+```cpp
+#include "Grobot.h"
+
+Grobot *robot = new Grobot();
+Gmotor *lmt = new Gmotor(3, 2), *rmt = new Gmotor(5, 4);
+
+void setup()
+{
+    robot->configMotor(lmt, rmt);
+    robot->configTFT(QD_TFT180A, 51, 52, 32, 34, 0, 33);
+    // robot->configController(A14, A7, A13, A6, true, true); //因为只是往前走走并不需要遥控器
+    robot->configSensor(A1, A2, A3, A4, A5);
+    robot->configServo(6,7);
+    robot->configHandAng(0, 165);
+    robot->configArmAng(15, 180);
+    robot->initialRobot();
+    // robot->pair();  //因为只是往前走走并不需要配对
+    // robot->testSensors(); //因为只是往前走走并不需要传感器
+}
+
+void loop()
+{
+    robot -> walkTime(70,1000);   //往前走一些
+    robot -> handGrasp();       //hand(手)Grasp(抓住)
+    robot -> armLift();         //arm(臂)Lift(抬起)
+    robot -> walkTime(-70,1000);  //再往后退一些
+    robot -> armPut();          //arm(臂)Put(放下)
+    robot -> handRelease();     //hand(手)Release(松开)
+}
+```  
+说实话我本来不想在这里放实例代码的但是为了充字数....  
+
+---
+
+<font size=6>
+好了！我们已经把基础的内容都学完了。接下来我们将接触几个综合性任务来考验你的应用能力。！
+</font>
 
 实话跟你讲我还没写完....
 

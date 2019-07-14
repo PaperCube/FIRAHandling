@@ -17,7 +17,7 @@ byte           vibrate = 0;
 class Grobot {
   private:
     Gmotor *mtl, *mtr;
-    Servo   armServo, handServo;
+    Servo * armServo, *handServo;
     uc      s1, s2, s3, s4, s5;
     uc      hunterL = s2, hunterM = s3, hunterR = s4;
     UTFT *  GLCD       = new UTFT(QD_TFT180A, 51, 52, 32, 34, 33);
@@ -25,6 +25,7 @@ class Grobot {
     int     threshold[6];
     int     lineCrossTime = 70;
     int     negativeSpeed = 100, negativeRuntime = 50;
+    int     handGraspAng, handReleaseAng, armLiftAng, armPutAng;
 
   public:
     Grobot();
@@ -35,6 +36,8 @@ class Grobot {
     byte configController(uc, uc, uc, uc);
     void configController(uc, uc, uc, uc, bool, bool);
     void configServo(int, int);
+    void configHandAng(int, int);
+    void configArmAng(int, int);
 
     void testSensors();
     void setThreshold(int, int, int, int, int);
@@ -54,6 +57,11 @@ class Grobot {
     void turnRight(int, int);
     void huntLine(int, int, int);
     void stop(int);
+
+    void handGrasp();
+    void handRelease();
+    void armLift();
+    void armPut();
 
     void waitForButtonPress(ui);
     void waitForButtonRelease(ui);
@@ -94,8 +102,17 @@ void Grobot::configController(
 }
 
 void Grobot::configServo(int armPin, int handPin) {
-    this->armServo.attach(armPin);
-    this->handServo.attach(handPin);
+    this->armServo->attach(armPin);
+    this->handServo->attach(handPin);
+}
+
+void configHandAng(int handReleaseAng, int handGraspAng) {
+    this->handGraspAng   = handGraspAng;
+    this->handReleaseAng = handReleaseAng;
+}
+void configArmAng(int armPutAng, int armLiftAng) {
+    this->armLiftAng = armLiftAng;
+    this->armPutAng  = armPutAng;
 }
 
 void Grobot::waitForButtonPress(ui button) {
@@ -268,6 +285,11 @@ void Grobot::stop(int mode) {
     this->mtr->stop(mode);
 }
 
+void handGrasp() { this->handServo->write(this->handGraspAng); }
+void handRelease() { this->handServo->write(this->handReleaseAng); }
+void armLift() { this->armServo->write(this->armLiftAng); }
+void armPut() { this->armServo->write(this->armPutAng); }
+
 void Grobot::initialRobot() {
     // error = controller->config_gamepad(PS2_CLK, PS2_CMD, PS2_SEL, PS2_DAT,
     // pressures, rumble);
@@ -362,7 +384,7 @@ void Grobot::testSensors() {
         this->GLCD->print(String(i) + "W ", 31, 100, 90);
         this->GLCD->setFont(BigFont);
         for (;;) {
-            this->GLCD->print(String(analogRead(sensorList[i])) + " ", 70, 56,
+            this->GLCD->print(String(analogRead(sensorList[i])) + "  ", 70, 56,
                               90);
             this->controller->read_gamepad();
             if (controller->ButtonPressed(PSB_START) /*  || GetKey(2) z*/)
@@ -380,7 +402,7 @@ void Grobot::testSensors() {
         this->GLCD->print(String(i) + "B ", 31, 100, 90);
         this->GLCD->setFont(BigFont);
         for (;;) {
-            this->GLCD->print(String(analogRead(sensorList[i])) + " ", 70, 56,
+            this->GLCD->print(String(analogRead(sensorList[i])) + "  ", 70, 56,
                               90);
             this->controller->read_gamepad();
             if (controller->ButtonPressed(PSB_START) /*  || GetKey(2) z*/)
@@ -482,7 +504,6 @@ void Grobot::enterManualMode() {
         Serial.println(this->controller->Analog(PSS_RX), DEC);
         mtl->setSpeed(127 - this->controller->Analog(PSS_LY));
         mtr->setSpeed(127 - this->controller->Analog(PSS_RY));
-
         delay(50);
     }
 }
