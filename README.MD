@@ -12,17 +12,24 @@
  
 > LastUpdate 最近一次更新内容
 
-版本号201907142054：  
-续写了死亡教程，修订了机械手控制部分  [->点击进入教程](https://github.com/visualDust/FIRAHandling/blob/master/Documents/LibDoc.markdown "点击进入教程")  
-[Grobot库](https://github.com/visualDust/FIRAHandling/blob/master/Libiaries/Grobot.h "Grobot.h")修复了传感器测试方法屏幕显示刷新的问题  
-[图纸]为了避免超重，修订了图纸以减轻重量  
-[VisualDust]作者跑了，但是依然提供远程支持
+版本号201907182144：  
+今天要好好的为京阿尼祈福哦，为此事bilibili主页番剧板块变成了黑白色。[->点击立马进入bilibili开始补番为京阿尼祈福](https://www.bilibili.com/anime/ "点击立马进入bilibili开始补番为京阿尼祈福")    
+续写了死亡教程[->点击进入教程]  
+[VisualDust]这是作者在北京的第四天。北京地铁真是可怕。
 
 > 目前的硬件图纸
 
 ![Robot](Robot.png)  
 
 > 过往更新
+
+版本号201907142054：  
+续写了死亡教程，修订了机械手控制部分  [->点击进入教程](https://github.com/visualDust/FIRAHandling/blob/master/Documents/LibDoc.markdown "点击进入教程")  
+[Grobot库](https://github.com/visualDust/FIRAHandling/blob/master/Libiaries/Grobot.h "Grobot.h")修复了传感器测试方法屏幕显示刷新的问题  
+[图纸]为了避免超重，修订了图纸以减轻重量  
+[VisualDust]作者跑了，但是依然提供远程支持
+
+---
 
 版本号201907132059：  
 续写了死亡教程，增加了进入遥控模式的教程  [->点击进入教程](https://github.com/visualDust/FIRAHandling/blob/master/Documents/LibDoc.markdown "点击进入教程")  
