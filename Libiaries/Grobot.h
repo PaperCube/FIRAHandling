@@ -66,6 +66,8 @@ class Grobot {
     void waitForButtonPress(ui);
     void waitForButtonRelease(ui);
 
+    void standByLine(int, int, int);
+
     void initialRobot();
     void pair();
     void enterManualMode();
@@ -285,10 +287,23 @@ void Grobot::stop(int mode) {
     this->mtr->stop(mode);
 }
 
-void handGrasp() { this->handServo->write(this->handGraspAng); }
-void handRelease() { this->handServo->write(this->handReleaseAng); }
-void armLift() { this->armServo->write(this->armLiftAng); }
-void armPut() { this->armServo->write(this->armPutAng); }
+void Grobot::handGrasp() { this->handServo->write(this->handGraspAng); }
+void Grobot::handRelease() { this->handServo->write(this->handReleaseAng); }
+void Grobot::armLift() { this->armServo->write(this->armLiftAng); }
+void Grobot::armPut() { this->armServo->write(this->armPutAng); }
+
+void Grobot::standByLine(int baseSpeed, int subNegative, int sensitivityDelay) {
+    while (this->getSensorVal(A1) >= this->threshold[1] &&
+           this->getSensorVal(A5) >= this->threshold[5]) {
+        if (this->getSensorVal(A1) < this->threshold[1])
+            this->mtl->setSpeed(-subNegative);
+        if (this->getSensorVal(A5) < this->threshold[5])
+            this->mtr->setSpeed(subNegative);
+        deelay(50);
+        this->mtl->setSpeed(baseSpeed);
+        this->mtr->setSpeed(baseSpeed);
+    }
+}
 
 void Grobot::initialRobot() {
     // error = controller->config_gamepad(PS2_CLK, PS2_CMD, PS2_SEL, PS2_DAT,
