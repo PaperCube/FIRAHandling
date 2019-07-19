@@ -108,11 +108,11 @@ void Grobot::configServo(int armPin, int handPin) {
     this->handServo->attach(handPin);
 }
 
-void configHandAng(int handReleaseAng, int handGraspAng) {
+void Grobot::configHandAng(int handReleaseAng, int handGraspAng) {
     this->handGraspAng   = handGraspAng;
     this->handReleaseAng = handReleaseAng;
 }
-void configArmAng(int armPutAng, int armLiftAng) {
+void Grobot::configArmAng(int armPutAng, int armLiftAng) {
     this->armLiftAng = armLiftAng;
     this->armPutAng  = armPutAng;
 }
