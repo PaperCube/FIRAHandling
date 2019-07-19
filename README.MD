@@ -9,6 +9,10 @@
 
 [![entrance](TutorialButton.png)](https://github.com/visualDust/FIRAHandling/blob/master/Documents/LibDoc.markdown)
 [![entrance](ChatGroup.png)](https://github.com/visualDust/FIRAHandling/issues/4)
+[![entrance](View_GrobotH_Button.png)](https://github.com/visualDust/FIRAHandling/blob/master/Libiaries/Grobot.h)
+[![entrance](View_GmotorH_Button.png)](https://github.com/visualDust/FIRAHandling/blob/master/Libiaries/Gmotor.h)  
+
+* 注意，保持持续更新的库文件只在Libraries文件夹下，其余位置出现的任何Gxxx.h文件都是测试用内容，不保持更新
  
 > LastUpdate 最近一次更新内容
 
