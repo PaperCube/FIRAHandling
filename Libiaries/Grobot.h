@@ -50,18 +50,18 @@ class Grobot {
     int     getSensorVal(uc);
     Gmotor *getMotor(uc);
 
-    void wait(int);
-    void walkTime(int, int);
-    void walkBlock(int, int);
-    void turnLeft(int, int);
-    void turnRight(int, int);
-    void huntLine(int, int, int);
-    void stop(int);
-
-    void handGrasp();
-    void handRelease();
-    void armLift();
-    void armPut();
+    void      wait(int);
+    void      walkTime(int, int);
+    void      walkTime(int, int, int);
+    void      walkBlock(int, int);
+    void      turnLeft(int, int);
+    void      turnRight(int, int);
+    void void huntLine(int, int, int);
+    void      stop(int);
+    void      handGrasp();
+    void      handRelease();
+    void      armLift();
+    void      armPut();
 
     void waitForButtonPress(ui);
     void waitForButtonRelease(ui);
@@ -185,6 +185,14 @@ void Grobot::wait(int ms) { delay(ms); }
 void Grobot::walkTime(int speed, int ms) {
     this->mtl->setSpeed(speed);
     this->mtr->setSpeed(speed);
+    delay(ms);
+    this->mtl->stop(0);
+    this->mtr->stop(0);
+}
+
+void Grobot::walkTime(int speedL, int speedR, int ms) {
+    this->mtl->setSpeed(speedL);
+    this->mtr->setSpeed(speedR);
     delay(ms);
     this->mtl->stop(0);
     this->mtr->stop(0);
