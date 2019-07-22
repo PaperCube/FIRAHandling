@@ -50,18 +50,18 @@ class Grobot {
     int     getSensorVal(uc);
     Gmotor *getMotor(uc);
 
-    void      wait(int);
-    void      walkTime(int, int);
-    void      walkTime(int, int, int);
-    void      walkBlock(int, int);
-    void      turnLeft(int, int);
-    void      turnRight(int, int);
-    void void huntLine(int, int, int);
-    void      stop(int);
-    void      handGrasp();
-    void      handRelease();
-    void      armLift();
-    void      armPut();
+    void wait(int);
+    void walkTime(int, int);
+    void walkTime(int, int, int);
+    void walkBlock(int, int);
+    void turnLeft(int, int);
+    void turnRight(int, int);
+    void huntLine(int, int, int);
+    void stop(int);
+    void handGrasp();
+    void handRelease();
+    void armLift();
+    void armPut();
 
     void waitForButtonPress(ui);
     void waitForButtonRelease(ui);
@@ -73,7 +73,10 @@ class Grobot {
     void enterManualMode();
 };
 
-Grobot::Grobot() {}
+Grobot::Grobot() {
+    armServo = nullptr;
+    handServo = nullptr;
+}
 
 void Grobot::configMotor(Gmotor *leftMotor, Gmotor *rightMotor) {
     this->mtl = leftMotor;
@@ -104,6 +107,10 @@ void Grobot::configController(
 }
 
 void Grobot::configServo(int armPin, int handPin) {
+    delete armServo;
+    delete handServo;
+    armServo = new Servo;
+    handServo = new Servo;
     this->armServo->attach(armPin);
     this->handServo->attach(handPin);
 }
@@ -307,7 +314,7 @@ void Grobot::standByLine(int baseSpeed, int subNegative, int sensitivityDelay) {
             this->mtl->setSpeed(-subNegative);
         if (this->getSensorVal(A5) < this->threshold[5])
             this->mtr->setSpeed(subNegative);
-        deelay(50);
+        delay(50);
         this->mtl->setSpeed(baseSpeed);
         this->mtr->setSpeed(baseSpeed);
     }
