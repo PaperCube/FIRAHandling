@@ -54,7 +54,7 @@ void Gmotor::setSpeed(int speed) {
     analogWrite(cnt2, (double)(this->speed * prop));
 }
 
-double getProp() { return this->prop; }
+double Gmotor::getProp() { return this->prop; }
 
 int Gmotor::getSpeed() { return this->speed; }
 
