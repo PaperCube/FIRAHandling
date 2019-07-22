@@ -74,7 +74,7 @@ class Grobot {
 };
 
 Grobot::Grobot() {
-    armServo = nullptr;
+    armServo  = nullptr;
     handServo = nullptr;
 }
 
@@ -109,19 +109,28 @@ void Grobot::configController(
 void Grobot::configServo(int armPin, int handPin) {
     delete armServo;
     delete handServo;
-    armServo = new Servo;
+    armServo  = new Servo;
     handServo = new Servo;
     this->armServo->attach(armPin);
     this->handServo->attach(handPin);
+    armPut();
+    handRelease();
 }
 
 void Grobot::configHandAng(int handReleaseAng, int handGraspAng) {
     this->handGraspAng   = handGraspAng;
     this->handReleaseAng = handReleaseAng;
+    if (handServo != nullptr) {
+        handRelease();
+    }
 }
+
 void Grobot::configArmAng(int armPutAng, int armLiftAng) {
     this->armLiftAng = armLiftAng;
     this->armPutAng  = armPutAng;
+    if (armServo != nullptr) {
+        armPut();
+    }
 }
 
 void Grobot::waitForButtonPress(ui button) {
